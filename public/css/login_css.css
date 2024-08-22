@@ -35,9 +35,7 @@ label {
 }
 
 input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
+input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -46,9 +44,7 @@ select {
 }
 
 input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-select:focus {
+input[type="password"]:focus {
     border-color: #007bff;
     outline: none;
 }
@@ -72,18 +68,18 @@ button:focus {
     outline: none;
 }
 
-.login-prompt {
+.signup-prompt {
     margin-top: 20px;
     text-align: center;
     font-size: 14px;
     color: #555;
 }
 
-.login-prompt a {
+.signup-prompt a {
     color: #007bff;
     text-decoration: none;
 }
 
-.login-prompt a:hover {
+.signup-prompt a:hover {
     text-decoration: underline;
 }
