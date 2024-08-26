@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Teaching Learning</title>
+        <link rel="shortcut icon" type="image/x-icon" href="https://www.aef.edu.in/aef/fevicon.png">
+        <link rel="stylesheet" href="../css/session_conducted.css" />
+    </head>
+    <body>
+        <div class="sidebar">
+            <div class="user-info">
+                <h2>Omkar Mandhare</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Session Conducted</a></li>
+                <li><a href="#">Syllabus Completed</a></li>
+                <li><a href="#">Class Observation</a></li>
+                <li><a href="#">Central Committee</a></li>
+                <li><a href="#">Unit Level Committee</a></li>
+                <li><a href="#">Research and Academic Contribution</a></li>
+                <li><a href="#">Mentoring Feedback Score</a></li>
+                <li><a href="#">Teaching Feedback</a></li>
+            </ul>
+            <div class="logout">
+                <a href="#">Logout</a>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="container">
+                <h1>No. of Lectures Conducted</h1>
+                <div class="form-header">
+                    <div class="form-group">
+                        <label for="month">Month:</label>
+                        <select id="month">
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <select id="year">
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="lectures-section">
+                    <div class="lectures-table">
+                        <div>Subjects</div>
+                        <div>Planned Sessions</div>
+                        <div>Actual Sessions</div>
+                        <div>Deviation in sessions</div>
+                        <div>Cumulative Syllabus</div>
+                        <div>Achievement of Planned</div>
+                        <div>Weightage as per ERP</div>
+                    </div>
+                    <span class="lectures-total">
+                        <span>Total Weightage:</span>
+                        <span id="total-weightage">0</span>
+                    </span>
+                </div>
+                <div class="additional-section">
+                    <h2>Evaluation</h2>
+                    <div class="additional-row">
+                        <input type="number" placeholder="Marks Achieved" />
+                        <input type="text" placeholder="Coordination Evaluation" />
+                        <input type="text" placeholder="Remark" />
+                    </div>
+                </div>
+
+                <button type="submit">Submit</button>
+            </div>
+        </div>
+
+        <script src="../js/session_conducted.js"></script>
+    </body>
+</html>

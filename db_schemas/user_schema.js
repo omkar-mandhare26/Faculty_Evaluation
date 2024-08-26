@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
     userId: {
@@ -30,7 +30,7 @@ const userSchema = mongoose.Schema({
     },
     qualification: {
         type: String,
-        required: true,
+        required: true
     }
 });
 

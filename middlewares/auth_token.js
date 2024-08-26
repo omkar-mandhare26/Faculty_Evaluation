@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 
 const authenticateToken = (req, res, next) => {
-    const token = req.cookies.token || req.header('Authorization')?.replace('Bearer ', '');
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-        return res.status(403).json({ message: "Access denied, no token provided" });
+        return res.redirect("/login");
     }
 
     try {
@@ -12,7 +12,7 @@ const authenticateToken = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
-        return res.status(401).json({ message: "Invalid token" });
+        return res.redirect("/login");
     }
 };
 
