@@ -2,18 +2,39 @@ import cookieParser from "cookie-parser";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import path from "path";
 import { createHashPassword, checkPassword } from "../utils/hash_password.js";
 import { userZodSchema } from "../zod_schemas/zod_schemas.js";
+import userAuthenticateToken from "../middlewares/user_auth_token.js";
 import generateUserId from "../utils/generating_user_id.js";
 import { User, Subjects } from "../db_schemas/schemas.js";
 import connectDB from "../database/connect.js";
+// import signJWT from "../utils/login_cookies.js";
 
 const router = Router();
 connectDB();
 dotenv.config();
 router.use(cookieParser());
 
-router.post("/signup", async (req, res) => {
+router.get("/login", (req, res) => {
+    res.sendFile(path.resolve("public/html/login_user.html"));
+});
+
+router.get("/signup", (req, res) => {
+    // res.sendFile("./public/html/singup.html");
+    res.sendFile(path.resolve("public/html/signup_user.html"));
+    // res.sendFile("signup.html", { root: path.join(__dirname, "public/html") });
+});
+
+router.get("/", userAuthenticateToken, (req, res) => {
+    res.json({ msg: "Hellooo from Home Page" });
+});
+
+router.get("/add-subjects", userAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/html/add_subjects.html"));
+});
+
+router.post("/users/signup", async (req, res) => {
     const parsedInfo = req.body;
     const hashedPW = await createHashPassword(parsedInfo.password);
     const newUser = {
@@ -45,7 +66,7 @@ router.post("/signup", async (req, res) => {
 
             res.cookie("token", token, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 sameSite: "strict"
             });
 
@@ -65,7 +86,7 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/users/login", async (req, res) => {
     const { username, password } = req.body;
 
     try {
@@ -78,7 +99,6 @@ router.post("/login", async (req, res) => {
         if (!match) {
             return res.status(401).json({ message: "Wrong Credentials" });
         }
-
         const token = jwt.sign(
             {
                 userId: user._id,
@@ -90,7 +110,7 @@ router.post("/login", async (req, res) => {
         );
 
         res.cookie("token", token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: "strict"
         });
@@ -101,13 +121,14 @@ router.post("/login", async (req, res) => {
             userid: user._id,
             token
         });
+        console.log("Login Success");
     } catch (error) {
         console.error("Error during login:", error);
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 });
 
-router.post("/add-subjects-to-user", async (req, res) => {
+router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, res) => {
     const { subjects } = req.body;
     const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
 
