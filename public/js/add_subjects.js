@@ -32,13 +32,22 @@ document.getElementById("submit-subjects").addEventListener("click", async funct
     const subjects = document.querySelectorAll(".subject-input");
     const subjectValues = Array.from(subjects).map(input => input.value);
 
+    const semester = document.getElementById("semester").value;
+    const startingMonth = document.getElementById("starting-month").value;
+    const endingMonth = document.getElementById("ending-month").value;
+
     try {
         const response = await fetch("/users/add-subjects-to-user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ subjects: subjectValues })
+            body: JSON.stringify({
+                subjects: subjectValues,
+                semester: semester,
+                startMonth: startingMonth,
+                endMonth: endingMonth
+            })
         });
 
         if (response.ok) {
@@ -46,12 +55,10 @@ document.getElementById("submit-subjects").addEventListener("click", async funct
         } else {
             console.error("Failed to submit subjects");
             console.log(response);
-
             alert("Failed to submit subjects. Please try again.");
         }
     } catch (error) {
         console.error("Error:", error);
-        console.log(response);
         alert("An error occurred. Please try again.");
     }
 });

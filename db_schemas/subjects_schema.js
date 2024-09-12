@@ -9,6 +9,18 @@ const subjectSchema = mongoose.Schema({
     subject: {
         type: String,
         required: true
+    },
+    semester: {
+        type: String,
+        required: true
+    },
+    startMonth: {
+        type: String,
+        required: true
+    },
+    endMonth: {
+        type: String,
+        required: true
     }
 });
 

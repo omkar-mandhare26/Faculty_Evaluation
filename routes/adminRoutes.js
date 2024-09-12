@@ -1,17 +1,16 @@
+import { createHashPassword, checkPassword } from "../utils/hash_password.js";
+import adminAuthenticateToken from "../middlewares/admin_auth_token.js";
+import { adminZodSchema } from "../zod_schemas/zod_schemas.js";
+import generateUserId from "../utils/generating_user_id.js";
+import getUserType from "../utils/get_user_type.js";
+import { Admin } from "../db_schemas/schemas.js";
 import cookieParser from "cookie-parser";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import path from "path";
-import { createHashPassword, checkPassword } from "../utils/hash_password.js";
-import adminAuthenticateToken from "../middlewares/admin_auth_token.js";
-import { adminZodSchema } from "../zod_schemas/zod_schemas.js";
-import generateUserId from "../utils/generating_user_id.js";
-import { Admin } from "../db_schemas/schemas.js";
-import connectDB from "../database/connect.js";
 
 const router = Router();
-connectDB();
 dotenv.config();
 router.use(cookieParser());
 
@@ -120,6 +119,11 @@ router.post("/login", async (req, res) => {
         console.error("Error during login:", error);
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
+});
+
+router.post("/get-user-type", adminAuthenticateToken, (req, res) => {
+    const userType = getUserType(req);
+    res.json(userType);
 });
 
 router.get("/dashboard", adminAuthenticateToken, (req, res) => {

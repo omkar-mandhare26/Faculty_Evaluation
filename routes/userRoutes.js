@@ -1,18 +1,16 @@
+import { userZodSchema, syllabus_Schema } from "../zod_schemas/zod_schemas.js";
+import { createHashPassword, checkPassword } from "../utils/hash_password.js";
+import { User, Subjects, noOfLectures } from "../db_schemas/schemas.js";
+import userAuthenticateToken from "../middlewares/user_auth_token.js";
+import generateUserId from "../utils/generating_user_id.js";
+import getUserType from "../utils/get_user_type.js";
 import cookieParser from "cookie-parser";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import path from "path";
-import { createHashPassword, checkPassword } from "../utils/hash_password.js";
-import { userZodSchema } from "../zod_schemas/zod_schemas.js";
-import userAuthenticateToken from "../middlewares/user_auth_token.js";
-import generateUserId from "../utils/generating_user_id.js";
-import { User, Subjects } from "../db_schemas/schemas.js";
-import connectDB from "../database/connect.js";
-// import signJWT from "../utils/login_cookies.js";
 
 const router = Router();
-connectDB();
 dotenv.config();
 router.use(cookieParser());
 
@@ -21,9 +19,7 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/signup", (req, res) => {
-    // res.sendFile("./public/html/singup.html");
     res.sendFile(path.resolve("public/html/signup_user.html"));
-    // res.sendFile("signup.html", { root: path.join(__dirname, "public/html") });
 });
 
 router.get("/", userAuthenticateToken, (req, res) => {
@@ -32,6 +28,10 @@ router.get("/", userAuthenticateToken, (req, res) => {
 
 router.get("/add-subjects", userAuthenticateToken, (req, res) => {
     res.sendFile(path.resolve("public/html/add_subjects.html"));
+});
+
+router.get("/session-conducted", userAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/html/session_conducted.html"));
 });
 
 router.post("/users/signup", async (req, res) => {
@@ -129,7 +129,8 @@ router.post("/users/login", async (req, res) => {
 });
 
 router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, res) => {
-    const { subjects } = req.body;
+    const { subjects, startMonth, endMonth, semester } = req.body;
+
     const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
 
     try {
@@ -137,7 +138,6 @@ router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, re
         const username = decoded.username;
 
         const user = await User.findOne({ userId: username });
-        console.log(`User from DB: ${user}`);
 
         if (!user) {
             return res.status(404).json({ error: "User not found" });
@@ -146,9 +146,34 @@ router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, re
         for (const subject of subjects) {
             const newSubject = {
                 user: user._id,
-                subject
+                subject,
+                semester,
+                startMonth,
+                endMonth
             };
             await Subjects.create(newSubject);
+            const sessionConducted = {
+                user: user._id,
+                subject: subject,
+                plannedSession: 0,
+                sessionCompleted: 0,
+                deviation: 0,
+                cumulativeSyllabus: 0,
+                sessionAchievement: 0,
+                weightageERP: 0,
+                marksAchieved: 0,
+                evaluation: 0,
+                remark: 0,
+                month: "PLACEHOLDER",
+                year: 0
+            };
+            try {
+                syllabus_Schema.parse(sessionConducted);
+            } catch (error) {
+                console.error("Zod Validation Error:", error.errors);
+                throw error;
+            }
+            await noOfLectures.create(sessionConducted);
         }
 
         res.status(200).json({
@@ -158,6 +183,31 @@ router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, re
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error Occurred while adding subjects" });
+    }
+});
+
+router.get("/users/get-session-conducted-records", userAuthenticateToken, async (req, res) => {
+    // const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+    const token = req.cookies.token || req.headers.authorization;
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+        const user = await User.findOne({ userId: username });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const session_conducted = await noOfLectures.find({ user: user._id });
+
+        if (!session_conducted) {
+            res.redirect("/add-subjects");
+            return;
+        }
+
+        res.status(200).json({ session_conducted });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error Occurred while fetching Session Records" });
     }
 });
 
