@@ -4,6 +4,7 @@ import { User, Subjects, noOfLectures } from "../db_schemas/schemas.js";
 import userAuthenticateToken from "../middlewares/user_auth_token.js";
 import generateUserId from "../utils/generating_user_id.js";
 import getUserType from "../utils/get_user_type.js";
+import decodeJWT from "../utils/decodeJWT.js";
 import cookieParser from "cookie-parser";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
@@ -164,7 +165,7 @@ router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, re
                 marksAchieved: 0,
                 evaluation: 0,
                 remark: 0,
-                month: "PLACEHOLDER",
+                month: "",
                 year: 0
             };
             try {
@@ -187,8 +188,8 @@ router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, re
 });
 
 router.get("/users/get-session-conducted-records", userAuthenticateToken, async (req, res) => {
-    // const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
-    const token = req.cookies.token || req.headers.authorization;
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+    // const token = req.cookies.token || req.headers.authorization;
     try {
         const decoded = jwt.verify(token, process.env.jwt_secret_key);
         const username = decoded.username;
@@ -211,4 +212,122 @@ router.get("/users/get-session-conducted-records", userAuthenticateToken, async 
     }
 });
 
+router.post("/users/update-session-conducted-records", userAuthenticateToken, async (req, res) => {
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+
+        const user = await User.findOne({ userId: username });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const subjects = Object.keys(req.body); // Get all subject keys (subject1, subject2, etc.)
+
+        for (let subjectKey of subjects) {
+            const {
+                subject,
+                plannedSession,
+                sessionCompleted,
+                deviation,
+                cumulativeSyllabus,
+                sessionAchievement,
+                weightageERP,
+                month,
+                year,
+                marksAchieved,
+                evaluation,
+                remark
+            } = req.body[subjectKey];
+
+            // Find existing session data for the user and subject
+            let sessionConducted = await noOfLectures.findOne({ user: user._id, subject });
+
+            if (!sessionConducted) {
+                // Create new session data if it doesn't exist
+                sessionConducted = new noOfLectures({
+                    user: user._id,
+                    subject,
+                    plannedSession,
+                    sessionCompleted,
+                    deviation,
+                    cumulativeSyllabus,
+                    sessionAchievement,
+                    weightageERP,
+                    month,
+                    year,
+                    marksAchieved,
+                    evaluation,
+                    remark
+                });
+            } else {
+                // Update existing session data
+                sessionConducted.plannedSession = plannedSession;
+                sessionConducted.sessionCompleted = sessionCompleted;
+                sessionConducted.deviation = deviation;
+                sessionConducted.cumulativeSyllabus = cumulativeSyllabus;
+                sessionConducted.sessionAchievement = sessionAchievement;
+                sessionConducted.weightageERP = weightageERP;
+                sessionConducted.month = month;
+                sessionConducted.year = year;
+                sessionConducted.marksAchieved = marksAchieved;
+                sessionConducted.evaluation = evaluation;
+                sessionConducted.remark = remark;
+            }
+
+            // Save or update the record in the database
+            await sessionConducted.save();
+        }
+
+        console.log("DB Updated 1");
+        res.status(200).json({
+            success: true,
+            message: "Session Records Updated Successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error Occurred while updating session records" });
+    }
+});
+
+router.get("/get-decoded-jwt", (req, res) => {
+    const decoded = decodeJWT(req);
+    if (decoded.err)
+        res.json({
+            error: decoded.err
+        });
+    else res.json(decoded);
+});
+
+router.get("/users/get-user-type", userAuthenticateToken, (req, res) => {
+    try {
+        const userType = getUserType(req);
+        res.json(userType);
+    } catch (err) {
+        res.json({
+            error: "Error Occurred while fetching user type"
+        });
+    }
+});
+
+router.post("/just-receive-data", userAuthenticateToken, (req, res) => {
+    const body = req.body;
+    console.log(body);
+    res.json(body);
+});
+
 export default router;
+
+// function decodeJWT(req) {
+//     try {
+//         const token = req.cookies.token || req.headers.authorization;
+//         // const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+//         const decoded = jwt.verify(token, process.env.jwt_secret_key);
+//         return { decoded, error: false };
+//     } catch (err) {
+//         return { decoded: null, error: true };
+//     }
+// }

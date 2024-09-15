@@ -1,0 +1,25 @@
+{
+    "subject1": {
+        "subject": "Python",
+        "plannedSession": 10,
+        "sessionCompleted": 8,
+        "deviation": 2,
+        "cumulativeSyllabus": 100,
+        "sessionAchievement": 90,
+        "weightageERP": 50,
+        "month": "January",
+        "year": 2024
+    },
+
+    "subject2": {
+        "subject": "C++",
+        "plannedSession": 12,
+        "sessionCompleted": 10,
+        "deviation": 2,
+        "cumulativeSyllabus": 100,
+        "sessionAchievement": 80,
+        "weightageERP": 40,
+        "month": "February",
+        "year": 2024
+    }
+}
