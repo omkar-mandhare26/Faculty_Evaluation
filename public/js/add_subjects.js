@@ -32,7 +32,7 @@ document.getElementById("submit-subjects").addEventListener("click", async funct
     const subjects = document.querySelectorAll(".subject-input");
     const subjectValues = Array.from(subjects).map(input => input.value);
 
-    const semester = document.getElementById("semester").value;
+    const year = document.getElementById("year").value;
     const startingMonth = document.getElementById("starting-month").value;
     const endingMonth = document.getElementById("ending-month").value;
 
@@ -44,9 +44,9 @@ document.getElementById("submit-subjects").addEventListener("click", async funct
             },
             body: JSON.stringify({
                 subjects: subjectValues,
-                semester: semester,
-                startMonth: startingMonth,
-                endMonth: endingMonth
+                year: parseInt(year),
+                startMonth: parseInt(startingMonth),
+                endMonth: parseInt(endingMonth)
             })
         });
 

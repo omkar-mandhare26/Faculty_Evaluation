@@ -6,6 +6,7 @@ const noOfLecturesSchema = mongoose.Schema({
         ref: "users",
         required: true
     },
+    subject: String,
     plannedSession: Number,
     sessionCompleted: Number,
     deviation: Number,

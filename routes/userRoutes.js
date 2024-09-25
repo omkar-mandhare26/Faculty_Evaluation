@@ -1,16 +1,14 @@
 import { userZodSchema, syllabus_Schema } from "../zod_schemas/zod_schemas.js";
 import { createHashPassword, checkPassword } from "../utils/hash_password.js";
-import { User, Subjects, noOfLectures } from "../db_schemas/schemas.js";
+import { User, Subjects, noOfLectures, syllabusCompleted } from "../db_schemas/schemas.js";
 import userAuthenticateToken from "../middlewares/user_auth_token.js";
-import generateUserId from "../utils/generating_user_id.js";
-import getUserType from "../utils/get_user_type.js";
-import decodeJWT from "../utils/decodeJWT.js";
+import { generateUserId, getMonthName, getUserType, decodeJWT } from "../utils/all_utils.js";
 import cookieParser from "cookie-parser";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import path from "path";
-
+import fs from "fs";
 const router = Router();
 dotenv.config();
 router.use(cookieParser());
@@ -21,6 +19,15 @@ router.get("/login", (req, res) => {
 
 router.get("/signup", (req, res) => {
     res.sendFile(path.resolve("public/html/signup_user.html"));
+});
+
+router.get("/logout", (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "Strict"
+    });
+    res.redirect("/login");
 });
 
 router.get("/", userAuthenticateToken, (req, res) => {
@@ -130,7 +137,7 @@ router.post("/users/login", async (req, res) => {
 });
 
 router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, res) => {
-    const { subjects, startMonth, endMonth, semester } = req.body;
+    const { subjects, startMonth, endMonth, year } = req.body;
 
     const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
 
@@ -144,46 +151,77 @@ router.post("/users/add-subjects-to-user", userAuthenticateToken, async (req, re
             return res.status(404).json({ error: "User not found" });
         }
 
+        const sessionConductedData = [];
+        // const syllabusCompletedData = [];
+        const endingMonth = startMonth > endMonth ? 12 : endMonth;
+        let obj = {};
+
         for (const subject of subjects) {
             const newSubject = {
                 user: user._id,
                 subject,
-                semester,
+                year,
                 startMonth,
                 endMonth
             };
             await Subjects.create(newSubject);
-            const sessionConducted = {
-                user: user._id,
-                subject: subject,
-                plannedSession: 0,
-                sessionCompleted: 0,
-                deviation: 0,
-                cumulativeSyllabus: 0,
-                sessionAchievement: 0,
-                weightageERP: 0,
-                marksAchieved: 0,
-                evaluation: 0,
-                remark: 0,
-                month: "",
-                year: 0
-            };
-            try {
-                syllabus_Schema.parse(sessionConducted);
-            } catch (error) {
-                console.error("Zod Validation Error:", error.errors);
-                throw error;
-            }
-            await noOfLectures.create(sessionConducted);
-        }
 
+            for (let i = startMonth; i <= endingMonth; i++) {
+                obj = {
+                    user: user._id,
+                    subject: subject,
+                    plannedSession: 0,
+                    sessionCompleted: 0,
+                    deviation: 0,
+                    cumulativeSyllabus: 0,
+                    sessionAchievement: 0,
+                    weightageERP: 0,
+                    marksAchieved: 0,
+                    evaluation: 0,
+                    remark: 0,
+                    month: getMonthName(i).month,
+                    year: year
+                };
+                sessionConductedData.push(obj);
+            }
+            if (startMonth > endMonth) {
+                for (let i = 1; i <= endMonth; i++) {
+                    obj = {
+                        user: user._id,
+                        subject: subject,
+                        plannedSession: 0,
+                        sessionCompleted: 0,
+                        deviation: 0,
+                        cumulativeSyllabus: 0,
+                        sessionAchievement: 0,
+                        weightageERP: 0,
+                        marksAchieved: 0,
+                        evaluation: 0,
+                        remark: 0,
+                        month: getMonthName(i).month,
+                        year: year + 1
+                    };
+                    sessionConductedData.push(obj);
+                }
+            }
+        }
+        try {
+            sessionConductedData.forEach(obj => syllabus_Schema.parse(obj));
+        } catch (error) {
+            console.error("Zod Validation Error:", error.errors);
+            throw error;
+        }
+        await noOfLectures.insertMany(sessionConductedData);
+        await syllabusCompleted.insertMany(sessionConductedData);
+        fs.writeFileSync("./test.json", JSON.stringify(sessionConductedData));
         res.status(200).json({
             success: true,
-            message: "Subjects Added Successfully"
+            message: "Subjects Added Successfully",
+            receivedInput: { subjects, year, startMonth, endMonth }
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error Occurred while adding subjects" });
+        res.status(500).json({ error: "Error Occurred while adding subjects", errorMessage: error.message });
     }
 });
 
@@ -225,7 +263,7 @@ router.post("/users/update-session-conducted-records", userAuthenticateToken, as
             return res.status(404).json({ error: "User not found" });
         }
 
-        const subjects = Object.keys(req.body); // Get all subject keys (subject1, subject2, etc.)
+        const subjects = Object.keys(req.body);
 
         for (let subjectKey of subjects) {
             const {
@@ -243,11 +281,9 @@ router.post("/users/update-session-conducted-records", userAuthenticateToken, as
                 remark
             } = req.body[subjectKey];
 
-            // Find existing session data for the user and subject
             let sessionConducted = await noOfLectures.findOne({ user: user._id, subject });
 
             if (!sessionConducted) {
-                // Create new session data if it doesn't exist
                 sessionConducted = new noOfLectures({
                     user: user._id,
                     subject,
@@ -257,14 +293,13 @@ router.post("/users/update-session-conducted-records", userAuthenticateToken, as
                     cumulativeSyllabus,
                     sessionAchievement,
                     weightageERP,
-                    month,
+                    month: getMonthName(month).month,
                     year,
                     marksAchieved,
                     evaluation,
                     remark
                 });
             } else {
-                // Update existing session data
                 sessionConducted.plannedSession = plannedSession;
                 sessionConducted.sessionCompleted = sessionCompleted;
                 sessionConducted.deviation = deviation;
@@ -278,7 +313,6 @@ router.post("/users/update-session-conducted-records", userAuthenticateToken, as
                 sessionConducted.remark = remark;
             }
 
-            // Save or update the record in the database
             await sessionConducted.save();
         }
 
@@ -319,15 +353,35 @@ router.post("/just-receive-data", userAuthenticateToken, (req, res) => {
     res.json(body);
 });
 
-export default router;
+router.get("/users/search-session-records", userAuthenticateToken, async (req, res) => {
+    const { month, year } = req.query;
+    try {
+        const decodedToken = decodeJWT(req);
+        if (decodedToken.error) {
+            return res.json({ msg: "Error decoding token" });
+        }
+        const user = decodedToken.decoded;
+        const subjects = await Subjects.find({ user: user.userId }).select("subject");
 
-// function decodeJWT(req) {
-//     try {
-//         const token = req.cookies.token || req.headers.authorization;
-//         // const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
-//         const decoded = jwt.verify(token, process.env.jwt_secret_key);
-//         return { decoded, error: false };
-//     } catch (err) {
-//         return { decoded: null, error: true };
-//     }
-// }
+        if (!subjects) {
+            res.status(404).json({
+                message: "Subjects not found",
+                isError: true
+            });
+        }
+        const sessionConductedRecords = await noOfLectures.find({ user: user.userId, month: getMonthName(month).month, year });
+
+        if (!sessionConductedRecords) {
+            res.status(404).json({
+                message: "Session Records not found",
+                isError: true
+            });
+        }
+
+        res.status(200).json({ records: sessionConductedRecords, isError: false });
+    } catch (err) {
+        res.json({ msg: "Error Occurred", error: err.message });
+    }
+});
+
+export default router;
