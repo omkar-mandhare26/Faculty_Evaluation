@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const password = document.getElementById("password").value;
 
         try {
-            const response = await fetch("/users/login", {
+            const response = await fetch("/user/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
