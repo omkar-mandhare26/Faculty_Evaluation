@@ -51,7 +51,7 @@ document.getElementById("submit-subjects").addEventListener("click", async funct
         });
 
         if (response.ok) {
-            window.location.href = "/";
+            window.location.href = "/dashboard";
         } else {
             console.error("Failed to submit subjects");
             console.log(response);

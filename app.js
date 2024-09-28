@@ -2,6 +2,7 @@
 import userAuthenticateToken from "./middlewares/user_auth_token.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import apiRoutes from "./routes/apiRoutes.js";
 import connectDB from "./database/connect.js";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
@@ -20,6 +21,7 @@ app.use(express.static(path.resolve("public")));
 app.use(express.json());
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
+app.use("/api", apiRoutes);
 
 app.get("/", userAuthenticateToken, (req, res) => {
     res.json({ msg: "Hellooo from Home Page" });
@@ -43,6 +45,10 @@ app.get("/add-subjects", userAuthenticateToken, (req, res) => {
 
 app.get("/session-conducted", userAuthenticateToken, (req, res) => {
     res.sendFile(path.resolve("public/user/html/session_conducted.html"));
+});
+
+app.get("/syllabus-completed", userAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/user/html/syllabus_completed.html"));
 });
 
 app.post("/just-receive-data", userAuthenticateToken, (req, res) => {

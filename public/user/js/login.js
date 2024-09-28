@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
             if (response.ok) {
-                window.location.href = "/";
+                window.location.href = "/dashboard";
             } else {
                 alert("Login failed: " + data.message);
             }

@@ -15,7 +15,11 @@ dotenv.config();
 router.use(cookieParser());
 
 router.get("/signup", (req, res) => {
-    res.sendFile(path.resolve("public/html/signup_admin.html"));
+    res.sendFile(path.resolve("public/admin/html/signup_admin.html"));
+});
+
+router.get("/login", (req, res) => {
+    res.sendFile(path.resolve("public/admin/html/login_admin.html"));
 });
 
 router.get("/test", (req, res) => {
@@ -72,10 +76,6 @@ router.post("/signup", async (req, res) => {
         console.error("Validation failed:", validationErr.errors);
         res.status(400).json({ errors: validationErr.errors });
     }
-});
-
-router.get("/login", (req, res) => {
-    res.sendFile(path.resolve("public/html/login_admin.html"));
 });
 
 router.post("/login", async (req, res) => {

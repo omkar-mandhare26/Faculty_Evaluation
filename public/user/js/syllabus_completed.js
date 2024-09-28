@@ -29,7 +29,7 @@ searchBtn.addEventListener("click", async () => {
     const year = document.getElementById("year").value;
 
     try {
-        const response = await fetch(`/api/search-session-records?month=${month}&year=${year}`);
+        const response = await fetch(`/api/search-syllabus-records?month=${month}&year=${year}`);
         const data = await response.json();
 
         if (data && !data.isError) {
@@ -87,7 +87,7 @@ function gatherDataForSubmission(userType) {
 function sendSessionConductedData(userType) {
     const data = gatherDataForSubmission(userType);
 
-    fetch("/api/update-session-conducted-records", {
+    fetch("/api/update-syllabus-records", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -200,24 +200,19 @@ function updateDeviation(sessionInput, actualSessionInput, deviationDiv, cumulat
 function getWeightage(achievement) {
     switch (true) {
         case achievement >= 91 && achievement <= 100:
-            return 50;
+            return 20;
         case achievement >= 81 && achievement <= 90:
-            return 45;
+            return 18;
         case achievement >= 71 && achievement <= 80:
-            return 40;
+            return 16;
         case achievement >= 61 && achievement <= 70:
-            return 35;
+            return 14;
         case achievement >= 51 && achievement <= 60:
-            return 30;
+            return 12;
         default:
             return 0;
     }
 
-    // if (achievement >= 91 && achievement <= 100) return 50;
-    // if (achievement >= 81 && achievement <= 90) return 45;
-    // if (achievement >= 71 && achievement <= 80) return 40;
-    // if (achievement >= 61 && achievement <= 70) return 35;
-    // if (achievement >= 51 && achievement <= 60) return 30;
     return 0;
 }
 
