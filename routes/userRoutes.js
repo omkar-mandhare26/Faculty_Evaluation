@@ -151,8 +151,8 @@ router.post("/add-subjects-to-user", userAuthenticateToken, async (req, res) => 
                     sessionAchievement: 0,
                     weightageERP: 0,
                     marksAchieved: 0,
-                    evaluation: 0,
-                    remark: 0,
+                    evaluation: "",
+                    remark: "",
                     month: getMonthName(i).month,
                     year: year
                 };
@@ -170,8 +170,8 @@ router.post("/add-subjects-to-user", userAuthenticateToken, async (req, res) => 
                         sessionAchievement: 0,
                         weightageERP: 0,
                         marksAchieved: 0,
-                        evaluation: 0,
-                        remark: 0,
+                        evaluation: "",
+                        remark: "",
                         month: getMonthName(i).month,
                         year: year + 1
                     };

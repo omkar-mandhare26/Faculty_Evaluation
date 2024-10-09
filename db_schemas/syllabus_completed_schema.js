@@ -14,8 +14,8 @@ const noOfLecturesSchema = mongoose.Schema({
     sessionAchievement: Number,
     weightageERP: Number,
     marksAchieved: Number,
-    evaluation: Number,
-    remark: Number,
+    evaluation: String,
+    remark: String,
     month: String,
     year: Number
 });

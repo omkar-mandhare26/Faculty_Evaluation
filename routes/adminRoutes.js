@@ -1,9 +1,8 @@
+import { User, Admin, Subjects, noOfLectures, syllabusCompleted } from "../db_schemas/schemas.js";
+import { generateUserId, getMonthName, getUserType, decodeJWT } from "../utils/all_utils.js";
 import { createHashPassword, checkPassword } from "../utils/hash_password.js";
 import adminAuthenticateToken from "../middlewares/admin_auth_token.js";
 import { adminZodSchema } from "../zod_schemas/zod_schemas.js";
-import generateUserId from "../utils/generating_user_id.js";
-import getUserType from "../utils/get_user_type.js";
-import { Admin } from "../db_schemas/schemas.js";
 import cookieParser from "cookie-parser";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
@@ -22,8 +21,12 @@ router.get("/login", (req, res) => {
     res.sendFile(path.resolve("public/admin/html/login_admin.html"));
 });
 
-router.get("/test", (req, res) => {
-    res.json({ msg: "Hello" });
+router.get("/dashboard", adminAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/admin/html/dashboard.html"));
+});
+
+router.get("/session-conducted", adminAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/admin/html/session_conducted.html"));
 });
 
 router.post("/signup", async (req, res) => {
@@ -50,7 +53,8 @@ router.post("/signup", async (req, res) => {
                 {
                     userId: user._id,
                     username: user.userId,
-                    type: "admin"
+                    type: "admin",
+                    fullName: user.firstName + " " + user.lastName
                 },
                 process.env.jwt_secret_key,
                 { expiresIn: "1h" }
@@ -97,7 +101,8 @@ router.post("/login", async (req, res) => {
             {
                 userId: user._id,
                 username: user.userId,
-                type: "admin"
+                type: "admin",
+                fullName: user.firstName + " " + user.lastName
             },
             process.env.jwt_secret_key,
             { expiresIn: "1h" }
@@ -121,13 +126,13 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.post("/get-user-type", adminAuthenticateToken, (req, res) => {
-    const userType = getUserType(req);
-    res.json(userType);
-});
-
-router.get("/dashboard", adminAuthenticateToken, (req, res) => {
-    res.json({ message: "Wait kro admin" });
+router.get("/logout", (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "Strict"
+    });
+    res.redirect("/admin/login");
 });
 
 export default router;

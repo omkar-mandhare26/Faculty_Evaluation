@@ -11,8 +11,8 @@ const syllabus_Schema = zod.object({
     sessionAchievement: zod.number(),
     weightageERP: zod.number(),
     marksAchieved: zod.number(),
-    evaluation: zod.number(),
-    remark: zod.number(),
+    evaluation: zod.string(),
+    remark: zod.string(),
     month: zod.string(),
     year: zod.number()
 });

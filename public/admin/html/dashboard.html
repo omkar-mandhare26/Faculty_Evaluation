@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Admin Dashboard - ACBCS Monthly Reports</title>
+        <link rel="stylesheet" href="../admin/css/dashboard.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="https://www.aef.edu.in/aef/fevicon.png" />
+    </head>
+
+    <body>
+        <header class="navbar">
+            <h1>Admin Dashboard - ACBCS Monthly Reports</h1>
+            <div class="nav-buttons">
+                <button id="profile-btn">View Profile</button>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="top-section">
+                <a href="/view-account">
+                    <div class="card" id="view-account">
+                        <h2>View Profile</h2>
+                    </div>
+                </a>
+                <a href="/generate-report">
+                    <div class="card" id="generate-report">
+                        <h2>Generate Report</h2>
+                    </div>
+                </a>
+            </div>
+
+            <div class="grid-section">
+                <a href="/admin/session-conducted">
+                    <div class="card" id="evaluation-session-conducted">
+                        <h2>Evaluation on Session Conducted</h2>
+                    </div>
+                </a>
+                <a href="/evaluation-syllabus-completed">
+                    <div class="card" id="evaluation-syllabus-completed">
+                        <h2>Evaluation on Syllabus Completed</h2>
+                    </div>
+                </a>
+                <a href="/evaluation-research-contribution">
+                    <div class="card" id="evaluation-research-contribution">
+                        <h2>Evaluation on Research & Academic Contribution</h2>
+                    </div>
+                </a>
+                <a href="/class-observations">
+                    <div class="card" id="class-observations">
+                        <h2>Class Observation</h2>
+                    </div>
+                </a>
+            </div>
+
+            <div class="grid-section">
+                <a href="/create-add-committee-members">
+                    <div class="card" id="create-add-committee-members">
+                        <h2>Create / Add Committee Members</h2>
+                    </div>
+                </a>
+                <a href="/unit-level-committee">
+                    <div class="card" id="unit-level-committee">
+                        <h2>Unit Level Committee</h2>
+                    </div>
+                </a>
+                <a href="/mentoring-feedback-score">
+                    <div class="card" id="mentoring-feedback">
+                        <h2>Mentoring Feedback Score</h2>
+                    </div>
+                </a>
+                <a href="/teaching-feedback">
+                    <div class="card" id="teaching-feedback">
+                        <h2>Teaching Feedback</h2>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <script src="../admin/js/dashboard.js"></script>
+    </body>
+</html>
