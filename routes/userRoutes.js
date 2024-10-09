@@ -199,4 +199,26 @@ router.post("/add-subjects-to-user", userAuthenticateToken, async (req, res) => 
     }
 });
 
+router.get("/profile", userAuthenticateToken, async (req, res) => {
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+
+        const user = await User.findOne({ userId: username });
+        const data = {
+            username: user.userId,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            contactNo: user.contactNo,
+            emailId: user.emailId,
+            qualification: user.qualification
+        };
+
+        res.status(200).json({ data, isError: false });
+    } catch (err) {
+        res.status(500).json({ isError: true, message: "Error while fetching user" });
+    }
+});
+
 export default router;

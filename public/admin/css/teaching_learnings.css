@@ -277,6 +277,15 @@ select:focus {
     outline: none;
 }
 
+#logout-btn {
+    background-color: #0056b3;
+    color: white;
+}
+
+#logout-btn:hover {
+    background-color: #007bff;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;

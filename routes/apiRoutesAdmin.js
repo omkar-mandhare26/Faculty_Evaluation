@@ -106,6 +106,79 @@ router.post("/update-session-conducted-records", adminAuthenticateToken, async (
     }
 });
 
+router.get("/search-syllabus-records", adminAuthenticateToken, async (req, res) => {
+    const { userId, month, year } = req.query;
+
+    try {
+        const user = await User.findOne({ userId: userId });
+        const subjects = await Subjects.find({ user: user._id }).select("subject");
+
+        if (!subjects || subjects.length === 0) {
+            res.status(404).json({
+                message: "Subjects not found",
+                isError: true
+            });
+        }
+
+        const syllabusRecords = await syllabusCompleted.find({ user: user._id, month: getMonthName(month).month, year });
+
+        if (!syllabusRecords || syllabusRecords.length === 0) {
+            return res.status(404).json({
+                message: "Session Records not found",
+                isError: true
+            });
+        }
+
+        res.json({ records: syllabusRecords, isError: false });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ isError: true, error: error.message });
+    }
+});
+
+router.post("/update-syllabus-records", adminAuthenticateToken, async (req, res) => {
+    const { userId, marksAchieved, evaluation, remark, month, year } = req.body;
+
+    try {
+        const user = await User.findOne({ userId: userId });
+        if (!user) {
+            return res.status(404).json({ isError: true, message: "User not found" });
+        }
+
+        const syllabusRecords = await syllabusCompleted.find({ user: user._id, month: getMonthName(month).month, year });
+
+        if (!syllabusRecords || syllabusRecords.length === 0) {
+            return res.status(404).json({
+                isError: true,
+                message: "Session Records not found"
+            });
+        }
+
+        const updatedSessionRecords = await syllabusCompleted.updateMany(
+            { user: user._id, month: getMonthName(month).month, year },
+            {
+                $set: {
+                    marksAchieved,
+                    evaluation,
+                    remark
+                }
+            }
+        );
+
+        if (!updatedSessionRecords || updatedSessionRecords.length === 0) {
+            return res.status(404).json({
+                isError: true,
+                message: "Session Records not updated"
+            });
+        }
+
+        res.status(200).json({ message: "Session Records updated successfully", isError: false });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ isError: true, error: error.message });
+    }
+});
+
 router.get("/decoded-jwt", (req, res) => {
     const decoded = decodeJWT(req);
     if (decoded.err)

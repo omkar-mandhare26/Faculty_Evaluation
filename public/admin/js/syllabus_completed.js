@@ -18,7 +18,7 @@ searchBtn.addEventListener("click", async () => {
     year = document.getElementById("year").value;
 
     try {
-        const response = await fetch(`/api/admin/search-session-records?userId=${userId}&month=${month}&year=${year}`);
+        const response = await fetch(`/api/admin/search-syllabus-records?userId=${userId}&month=${month}&year=${year}`);
         const data = await response.json();
 
         if (data && !data.isError) {
@@ -57,7 +57,7 @@ function gatherDataForSubmission() {
 function sendSessionConductedData() {
     const data = gatherDataForSubmission();
 
-    fetch("/api/admin/update-session-conducted-records", {
+    fetch("/api/admin/update-syllabus-conducted-records", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

@@ -4,5 +4,5 @@ function addRedirectListener(cardId, route) {
     });
 }
 
-addRedirectListener("profile-btn", "/view-account");
+addRedirectListener("profile-btn", "/profile");
 addRedirectListener("logout-btn", "/logout");

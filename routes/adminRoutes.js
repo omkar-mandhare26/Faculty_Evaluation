@@ -29,6 +29,14 @@ router.get("/session-conducted", adminAuthenticateToken, (req, res) => {
     res.sendFile(path.resolve("public/admin/html/session_conducted.html"));
 });
 
+router.get("/syllabus-completed", adminAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/admin/html/syllabus_completed.html"));
+});
+
+router.get("/profile", adminAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/admin/html/view_profile.html"));
+});
+
 router.post("/signup", async (req, res) => {
     const parsedInfo = req.body;
     const hashedPW = await createHashPassword(parsedInfo.password);
@@ -89,7 +97,6 @@ router.post("/login", async (req, res) => {
         const user = await Admin.findOne({ userId: username });
 
         if (!user) {
-            z;
             return res.status(404).json({ message: "Admin not found" });
         }
         const match = await checkPassword(password, user.password);
@@ -123,6 +130,28 @@ router.post("/login", async (req, res) => {
     } catch (error) {
         console.error("Error during login:", error);
         return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+});
+
+router.get("/view-profile", adminAuthenticateToken, async (req, res) => {
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+
+        const user = await Admin.findOne({ userId: username });
+        const data = {
+            username: user.userId,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            contactNo: user.contactNo,
+            emailId: user.emailId,
+            level: user.level
+        };
+
+        res.status(200).json({ data, isError: false });
+    } catch (err) {
+        res.status(500).json({ isError: true, message: "Error while fetching user" });
     }
 });
 
