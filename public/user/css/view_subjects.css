@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-info h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.subject-section {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.subject-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.subject-table th,
+.subject-table td {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.subject-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.subject-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+@media screen and (max-width: 600px) {
+    .subject-table thead {
+        display: none;
+    }
+
+    .subject-table tr {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .subject-table td {
+        display: block;
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .subject-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: calc(50% - 20px);
+        text-align: left;
+        font-weight: bold;
+    }
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: #e6e6fa; */
+    /* background-color: #e6f7f1; */
+    /* background-color: #e0ffff; */
+    background-color: #ffffff;
+    color: #007bff;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.nav-buttons button {
+    background-color: white;
+    color: #007bff;
+    border: 2px solid #007bff;
+    padding: 0.6rem 1.2rem;
+    margin-left: 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.nav-buttons button:hover {
+    background-color: #0056b3;
+    color: white;
+    border-color: #0056b3;
+}

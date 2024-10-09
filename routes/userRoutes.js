@@ -126,7 +126,6 @@ router.post("/add-subjects-to-user", userAuthenticateToken, async (req, res) => 
         }
 
         const sessionConductedData = [];
-        // const syllabusCompletedData = [];
         const endingMonth = startMonth > endMonth ? 12 : endMonth;
         let obj = {};
 
@@ -219,6 +218,52 @@ router.get("/profile", userAuthenticateToken, async (req, res) => {
     } catch (err) {
         res.status(500).json({ isError: true, message: "Error while fetching user" });
     }
+});
+
+router.get("/get-all-subjects", userAuthenticateToken, async (req, res) => {
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+
+        const user = await User.findOne({ userId: username });
+        const subjects = await Subjects.find({ user: user._id }).select("subject year startMonth endMonth");
+
+        if (!subjects || subjects.length === 0) {
+            res.status(404).json({
+                message: "Subjects not found",
+                isError: true
+            });
+        }
+
+        const data = {
+            username: user.userId,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            subjects: subjects.map(subject => {
+                return {
+                    subject: subject.subject,
+                    year: subject.year,
+                    startMonth: getMonthName(subject.startMonth).month,
+                    endMonth: getMonthName(subject.endMonth).month
+                };
+            })
+        };
+
+        res.json({ data, isError: false });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ isError: true, error: error.message });
+    }
+});
+
+router.get("/decoded-jwt", (req, res) => {
+    const decoded = decodeJWT(req);
+    if (decoded.err)
+        res.status(401).json({
+            error: decoded.err
+        });
+    else res.status(200).json(decoded);
 });
 
 export default router;

@@ -1,5 +1,5 @@
 import { generateUserId, getMonthName, getUserType, decodeJWT } from "../utils/all_utils.js";
-import { User, Subjects, noOfLectures, syllabusCompleted } from "../db_schemas/schemas.js";
+import { User, Subjects, noOfLectures, syllabusCompleted, classObservation } from "../db_schemas/schemas.js";
 import { userZodSchema, syllabus_Schema } from "../zod_schemas/zod_schemas.js";
 import { createHashPassword, checkPassword } from "../utils/hash_password.js";
 import userAuthenticateToken from "../middlewares/user_auth_token.js";
@@ -261,6 +261,35 @@ router.get("/search-syllabus-records", userAuthenticateToken, async (req, res) =
         res.status(200).json({ records: syllabusRecords, isError: false });
     } catch (err) {
         res.json({ msg: "Error Occurred", error: err.message });
+    }
+});
+
+router.get("/get-class-observations", userAuthenticateToken, async (req, res) => {
+    const { month, year } = req.query;
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+
+        const user = await User.findOne({ userId: username });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const classObservations = await classObservation.find({ userId: user._id, month: getMonthName(month).month, year });
+        if (!classObservations || classObservations.length === 0) {
+            return res.status(404).json({
+                data: null,
+                message: "Class Observations not found",
+                isError: true
+            });
+        }
+
+        res.json({ data: classObservations, isError: false });
+    } catch (error) {
+        res.status(500).json({ isError: true, error: error.message });
     }
 });
 

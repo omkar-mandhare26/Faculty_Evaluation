@@ -57,6 +57,14 @@ app.get("/profile", userAuthenticateToken, (req, res) => {
     res.sendFile(path.resolve("public/user/html/view_profile.html"));
 });
 
+app.get("/subjects", userAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/user/html/view_subjects.html"));
+});
+
+app.get("/class-observations", userAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/user/html/class_observation.html"));
+});
+
 app.post("/just-receive-data", userAuthenticateToken, (req, res) => {
     const body = req.body;
     console.log(body);

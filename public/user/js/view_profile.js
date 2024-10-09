@@ -25,6 +25,10 @@ async function fetchProfileDetails() {
     }
 }
 
+document.querySelector("#dashboard-btn").addEventListener("click", () => {
+    window.location.href = "/dashboard";
+});
+
 document.querySelector("#logout-btn").addEventListener("click", () => {
     window.location.href = "/logout";
 });

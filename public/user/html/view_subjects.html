@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>View Subjects</title>
+        <link rel="stylesheet" href="../user/css/view_subjects.css" />
+    </head>
+    <body>
+        <header class="navbar">
+            <h1>ACBCS Monthly Reports</h1>
+            <div class="nav-buttons">
+                <button id="profile-btn">View Profile</button>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="user-info">
+                <h2 id="name"></h2>
+            </div>
+
+            <div class="subject-section">
+                <table class="subject-table">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Start Month</th>
+                            <th>End Month</th>
+                            <th>Year</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subject-list"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <script src="../user/js/view_subjects.js"></script>
+    </body>
+</html>
