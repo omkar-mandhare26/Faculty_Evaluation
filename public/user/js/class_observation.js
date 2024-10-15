@@ -39,3 +39,7 @@ function getUserName() {
             console.error("Error fetching user name:", error);
         });
 }
+
+function logout() {
+    window.location.href = "/logout";
+}

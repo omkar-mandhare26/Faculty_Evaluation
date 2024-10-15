@@ -19,7 +19,7 @@ searchBtn.addEventListener("click", async () => {
     document.getElementById("observation-marks").value = 0;
 
     try {
-        const response = await fetch(`/api/admin/get-class-observations?userId=${userId}&month=${month}&year=${year}`);
+        const response = await fetch(`/api/admin/get-mentoring-feedback?userId=${userId}&month=${month}&year=${year}`);
         const data = await response.json();
 
         if (data && !data.isError) {
@@ -55,7 +55,7 @@ submitBtn.addEventListener("click", async e => {
     };
 
     try {
-        const response = await fetch("/api/admin/submit-class-observation", {
+        const response = await fetch("/api/admin/submit-mentoring-feedback", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -67,11 +67,6 @@ body {
     background-color: #e0e0e0;
 }
 
-#logout-btn {
-    background-color: #0056b3;
-    color: white;
-}
-
 .main-content {
     flex: 1;
     padding: 20px;
@@ -299,4 +294,9 @@ input[type="number"]::-webkit-outer-spin-button {
     .additional-row {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     }
+}
+
+#logout-btn {
+    background-color: #0056b3;
+    color: white;
 }

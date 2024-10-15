@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const class_observations = mongoose.Schema({
+const mentoring_feedback = mongoose.Schema({
     userId: {
         type: String,
         required: true
@@ -19,5 +19,5 @@ const class_observations = mongoose.Schema({
     }
 });
 
-const classObservation = mongoose.model("class_observation", class_observations);
-export default classObservation;
+const mentoringFeedback = mongoose.model("mentoring_feedback", mentoring_feedback);
+export default mentoringFeedback;

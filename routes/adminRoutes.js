@@ -41,6 +41,10 @@ router.get("/class-observations", adminAuthenticateToken, (req, res) => {
     res.sendFile(path.resolve("public/admin/html/class_observation.html"));
 });
 
+router.get("/mentoring-feedback-score", adminAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/admin/html/mentoring_feedback.html"));
+});
+
 router.post("/signup", async (req, res) => {
     const parsedInfo = req.body;
     const hashedPW = await createHashPassword(parsedInfo.password);
