@@ -8,7 +8,13 @@ let year = "";
 document.addEventListener("DOMContentLoaded", () => {
     getAllUsers();
     getUserName();
-    document.querySelector("#selected-page").style = "background-color: #007bff; color: white;";
+});
+
+document.querySelector("#observation-marks").addEventListener("input", () => {
+    if (document.querySelector("#observation-marks").value > 35) {
+        alert("Marks cannot be greater than 35");
+        document.querySelector("#observation-marks").value = 0;
+    }
 });
 
 searchBtn.addEventListener("click", async () => {

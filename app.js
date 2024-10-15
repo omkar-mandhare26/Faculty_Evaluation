@@ -69,6 +69,10 @@ app.get("/mentoring-feedback-score", userAuthenticateToken, (req, res) => {
     res.sendFile(path.resolve("public/user/html/mentoring_feedback.html"));
 });
 
+app.get("/teaching-feedback", userAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/user/html/teaching_feedback.html"));
+});
+
 app.post("/just-receive-data", userAuthenticateToken, (req, res) => {
     const body = req.body;
     console.log(body);

@@ -1,4 +1,4 @@
-import { User, Subjects, noOfLectures, syllabusCompleted, classObservation, mentoringFeedback } from "../db_schemas/schemas.js";
+import { User, Subjects, noOfLectures, syllabusCompleted, classObservation, mentoringFeedback, teachingFeedback } from "../db_schemas/schemas.js";
 import { generateUserId, getMonthName, getUserType, decodeJWT } from "../utils/all_utils.js";
 import { userZodSchema, syllabus_Schema } from "../zod_schemas/zod_schemas.js";
 import { createHashPassword, checkPassword } from "../utils/hash_password.js";
@@ -318,6 +318,36 @@ router.get("/get-mentoring-feedback", userAuthenticateToken, async (req, res) =>
         }
 
         res.json({ data: mentoringFeedbackRecords, isError: false });
+    } catch (error) {
+        res.status(500).json({ isError: true, error: error.message });
+    }
+});
+
+router.get("/get-teaching-feedback", userAuthenticateToken, async (req, res) => {
+    const { month, year } = req.query;
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+
+        const user = await User.findOne({ userId: username });
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                isError: true
+            });
+        }
+
+        const TeachingFeedbackRecords = await teachingFeedback.find({ userId: user._id, month: getMonthName(month).month, year });
+        if (!TeachingFeedbackRecords || TeachingFeedbackRecords.length === 0) {
+            return res.status(413).json({
+                data: null,
+                message: "Mentoring Feedback Score not found",
+                isError: true
+            });
+        }
+
+        res.json({ data: TeachingFeedbackRecords, isError: false });
     } catch (error) {
         res.status(500).json({ isError: true, error: error.message });
     }

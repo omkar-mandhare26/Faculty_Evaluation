@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.querySelector("#observation-marks").addEventListener("input", () => {
-    if (document.querySelector("#observation-marks").value > 30) {
-        alert("Marks cannot be greater than 30");
+    if (document.querySelector("#observation-marks").value > 10) {
+        alert("Marks cannot be greater than 10");
         document.querySelector("#observation-marks").value = 0;
     }
 });
@@ -26,7 +26,7 @@ searchBtn.addEventListener("click", async () => {
     document.getElementById("observation-marks").value = 0;
 
     try {
-        const response = await fetch(`/api/admin/get-mentoring-feedback?userId=${userId}&month=${month}&year=${year}`);
+        const response = await fetch(`/api/admin/get-teaching-feedback?userId=${userId}&month=${month}&year=${year}`);
         const data = await response.json();
 
         if (data && !data.isError) {
@@ -42,7 +42,7 @@ searchBtn.addEventListener("click", async () => {
         }
     } catch (error) {
         console.error("Fetch error:", error);
-        alert("An error occurred while fetching class observations");
+        alert("An error occurred while fetching Teaching Feedback Score");
     }
 });
 
@@ -62,7 +62,7 @@ submitBtn.addEventListener("click", async e => {
     };
 
     try {
-        const response = await fetch("/api/admin/submit-mentoring-feedback", {
+        const response = await fetch("/api/admin/submit-teaching-feedback", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -72,9 +72,9 @@ submitBtn.addEventListener("click", async e => {
         const result = await response.json();
 
         if (result && !result.isError) {
-            alert("Class Observation submitted successfully!");
+            alert("Teaching Feedback Score submitted successfully!");
         } else {
-            alert("Error submitting class observation");
+            alert("Error submitting Teaching Feedback Score");
         }
     } catch (error) {
         console.error("Error submitting observation:", error);

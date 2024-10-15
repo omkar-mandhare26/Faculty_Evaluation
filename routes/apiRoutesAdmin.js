@@ -1,4 +1,4 @@
-import { User, Subjects, noOfLectures, syllabusCompleted, classObservation, mentoringFeedback } from "../db_schemas/schemas.js";
+import { User, Subjects, noOfLectures, syllabusCompleted, classObservation, mentoringFeedback, teachingFeedback } from "../db_schemas/schemas.js";
 import { generateUserId, getMonthName, getUserType, decodeJWT } from "../utils/all_utils.js";
 import { userZodSchema, syllabus_Schema } from "../zod_schemas/zod_schemas.js";
 import { createHashPassword, checkPassword } from "../utils/hash_password.js";
@@ -286,7 +286,7 @@ router.post("/submit-mentoring-feedback", adminAuthenticateToken, async (req, re
         if (existingObservation) {
             existingObservation.marks = observationMarks;
             await existingObservation.save();
-            return res.status(200).json({ isError: false, message: "Class observation updated successfully" });
+            return res.status(200).json({ isError: false, message: "Mentoring Feedback Score updated successfully" });
         } else {
             const newObservation = {
                 userId: user._id,
@@ -296,7 +296,70 @@ router.post("/submit-mentoring-feedback", adminAuthenticateToken, async (req, re
             };
 
             await mentoringFeedback.create(newObservation);
-            return res.status(201).json({ isError: false, message: "Class observation created successfully" });
+            return res.status(201).json({ isError: false, message: "Mentoring Feedback Score created successfully" });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ isError: true, error: error.message });
+    }
+});
+
+router.get("/get-teaching-feedback", adminAuthenticateToken, async (req, res) => {
+    const { userId, month, year } = req.query;
+
+    try {
+        const user = await User.findOne({ userId: userId });
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                isError: true
+            });
+        }
+
+        const teachingFeedbackRecords = await teachingFeedback.find({ userId: user._id, month: getMonthName(month).month, year });
+        if (!teachingFeedbackRecords || teachingFeedbackRecords.length === 0) {
+            return res.status(413).json({
+                data: null,
+                message: "Teaching Feedback Score not found",
+                isError: true
+            });
+        }
+
+        res.json({ data: teachingFeedbackRecords, isError: false });
+    } catch (error) {
+        res.status(500).json({ isError: true, error: error.message });
+    }
+});
+
+router.post("/submit-teaching-feedback", adminAuthenticateToken, async (req, res) => {
+    const { userId, observationMarks, month, year } = req.body;
+
+    try {
+        const user = await User.findOne({ userId: userId });
+        if (!user) {
+            return res.status(404).json({ isError: true, message: "User not found" });
+        }
+
+        const existingObservation = await teachingFeedback.findOne({
+            userId: user._id,
+            month: getMonthName(month).month,
+            year
+        });
+
+        if (existingObservation) {
+            existingObservation.marks = observationMarks;
+            await existingObservation.save();
+            return res.status(200).json({ isError: false, message: "Teaching Feedback Score updated successfully" });
+        } else {
+            const newObservation = {
+                userId: user._id,
+                marks: observationMarks,
+                month: getMonthName(month).month,
+                year
+            };
+
+            await teachingFeedback.create(newObservation);
+            return res.status(201).json({ isError: false, message: "Teaching Feedback Score created successfully" });
         }
     } catch (error) {
         console.error(error);
