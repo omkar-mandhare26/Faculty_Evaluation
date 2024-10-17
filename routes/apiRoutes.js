@@ -1,4 +1,4 @@
-import { User, Subjects, noOfLectures, syllabusCompleted, classObservation, mentoringFeedback, teachingFeedback } from "../db_schemas/schemas.js";
+import { User, Subjects, noOfLectures, syllabusCompleted, classObservation, mentoringFeedback, teachingFeedback, Contribution } from "../db_schemas/schemas.js";
 import { generateUserId, getMonthName, getUserType, decodeJWT } from "../utils/all_utils.js";
 import { userZodSchema, syllabus_Schema } from "../zod_schemas/zod_schemas.js";
 import { createHashPassword, checkPassword } from "../utils/hash_password.js";
@@ -348,6 +348,84 @@ router.get("/get-teaching-feedback", userAuthenticateToken, async (req, res) => 
         }
 
         res.json({ data: TeachingFeedbackRecords, isError: false });
+    } catch (error) {
+        res.status(500).json({ isError: true, error: error.message });
+    }
+});
+
+router.post("/submit-contributions", userAuthenticateToken, async (req, res) => {
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+
+        const user = await User.findOne({ userId: username });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const { data, month, year } = req.body;
+
+        for (const contribution of data) {
+            const { name, level, marks } = contribution;
+
+            let contributionRecord = await Contribution.findOne({
+                user: user._id,
+                contribution_name: name,
+                month: getMonthName(month).month,
+                year
+            });
+
+            if (!contributionRecord) {
+                contributionRecord = new Contribution({
+                    user: user._id,
+                    contribution_name: name,
+                    level,
+                    marks,
+                    month: getMonthName(month).month,
+                    year
+                });
+            } else {
+                contributionRecord.level = level;
+                contributionRecord.marks = marks;
+            }
+
+            await contributionRecord.save();
+        }
+
+        res.status(200).json({
+            isError: false,
+            message: "Contributions saved successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error occurred while saving contributions" });
+    }
+});
+
+router.get("/get-contributions", userAuthenticateToken, async (req, res) => {
+    const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret_key);
+        const username = decoded.username;
+
+        const user = await User.findOne({ userId: username });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const { month, year } = req.query;
+
+        const contributionRecords = await Contribution.find({ user: user._id, month: getMonthName(month).month, year });
+        if (!contributionRecords || contributionRecords.length === 0) {
+            return res.status(404).json({
+                data: null,
+                message: "Contributions not found",
+                isError: true
+            });
+        }
+
+        res.json({ data: contributionRecords, isError: false });
     } catch (error) {
         res.status(500).json({ isError: true, error: error.message });
     }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Class Observation</title>
+        <link rel="stylesheet" href="../admin/css/individual_reports.css" />
+        <link rel="stylesheet" href="../admin/css/nav_bar.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="https://www.aef.edu.in/aef/fevicon.png" />
+    </head>
+    <body>
+        <header class="navbar">
+            <h1>Generate Report Individually</h1>
+            <div class="nav-buttons">
+                <button id="profile-btn">View Profile</button>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </header>
+        <div class="main-content">
+            <div class="container">
+                <div class="form-header">
+                    <div class="form-group">
+                        <label for="page">Select Page:</label>
+                        <select id="page">
+                            <option value="A">Teaching Learning</option>
+                            <option value="B">Class Observation</option>
+                            <option value="C">Central Committee</option>
+                            <option value="D">Unit Level Committee</option>
+                            <option value="E">Research & Academic Contribution</option>
+                            <option value="F">Mentoring Feedback Score</option>
+                            <option value="G">Teaching Feedback Score</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="user">User:</label>
+                        <select id="user"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="month">Month:</label>
+                        <select id="month">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <select id="year">
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
+                    </div>
+                    <button id="search-btn">Generate</button>
+                </div>
+                <div id="display">
+                    <div class="heading">
+                        <h1>Showing Teaching Learning for September 2024 - Placeholder</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="../admin/js/individual_reports.js"></script>
+    </body>
+</html>

@@ -45,5 +45,5 @@ function getUserName() {
 }
 
 function logout() {
-    window.location.href = "/admin/logout";
+    window.location.href = "/logout";
 }

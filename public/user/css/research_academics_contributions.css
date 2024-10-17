@@ -1,3 +1,4 @@
+/* General page styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
@@ -6,6 +7,13 @@ body {
     height: 100vh;
 }
 
+/* Highlight selected page */
+#selected-page {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Sidebar styling */
 .sidebar {
     width: 250px;
     background-color: #fff;
@@ -18,6 +26,7 @@ body {
     overflow-y: auto;
 }
 
+/* User info section in sidebar */
 .user-info {
     margin-bottom: 20px;
 }
@@ -28,6 +37,7 @@ body {
     text-align: center;
 }
 
+/* Navigation links in the sidebar */
 .nav-links {
     list-style: none;
     padding: 0;
@@ -50,6 +60,7 @@ body {
     background-color: #f0f0f0;
 }
 
+/* Logout button at the bottom of the sidebar */
 .logout {
     margin-top: auto;
     text-align: center;
@@ -67,30 +78,7 @@ body {
     background-color: #e0e0e0;
 }
 
-/* .logout {
-    margin-top: auto;
-    text-align: center;
-}
-
-#logout-btn {
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    border-radius: 4px;
-    background-color: #0056b3;
-    color: white;
-}
-
-#logout-btn:hover {
-    color: #e0e0e0;
-    background-color: #007bff;
-} */
-
-#selected-page {
-    background-color: #007bff;
-    color: white;
-}
-
+/* Main content section */
 .main-content {
     flex: 1;
     padding: 20px;
@@ -100,6 +88,7 @@ body {
     width: 100%;
 }
 
+/* Container for the main form and other content */
 .container {
     background-color: #fff;
     padding: 20px;
@@ -110,12 +99,14 @@ body {
     overflow-x: auto;
 }
 
+/* Main heading styling */
 h1 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
 }
 
+/* Form header layout with responsiveness */
 .form-header {
     display: flex;
     justify-content: space-between;
@@ -129,6 +120,7 @@ h1 {
     min-width: 150px;
 }
 
+/* Label styling */
 label {
     display: block;
     font-weight: bold;
@@ -136,6 +128,7 @@ label {
     color: #555;
 }
 
+/* Input and select styling */
 input[type="text"],
 input[type="number"],
 select {
@@ -153,6 +146,7 @@ select:focus {
     outline: none;
 }
 
+/* Section for lectures */
 .lectures-section {
     margin-top: 20px;
 }
@@ -160,108 +154,83 @@ select:focus {
 .lectures-section h2 {
     margin-bottom: 15px;
     color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
 }
 
+/* Flex layout for contribution rows and headings */
 .lectures-table {
     display: grid;
-    grid-template-columns: 3fr repeat(6, 1fr);
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 10px;
+    grid-template-columns: 1fr 200px;
+    gap: 15px;
     font-weight: bold;
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
-    width: 100%;
+    margin-bottom: 20px;
 }
 
-.lectures-table div {
+.headings {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+/* Contribution names styling */
+.contributions {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contribution-level {
     padding: 10px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
+    text-align: center;
 }
 
 .lectures-row {
     display: grid;
-    grid-template-columns: 3fr repeat(6, 1fr);
-    gap: 10px;
-    align-items: center;
+    grid-template-columns: 1fr 200px;
+    gap: 15px;
     margin-bottom: 10px;
-    width: 100%;
+    align-items: center;
 }
 
-.lectures-row div {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.lectures-row .contributions {
     background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.lectures-row input[type="number"],
-.lectures-row input[type="text"] {
-    width: 100%;
-    padding: 8px;
+.lectures-row select.contribution-level {
+    padding: 10px;
+    background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box;
 }
 
-.lectures-row input[readonly] {
-    background-color: #f9f9f9;
-    border: none;
-}
-
-.additional-section {
-    margin-top: 30px;
-}
-
-.additional-section h2 {
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.additional-table {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 10px;
+.total-marks {
     font-weight: bold;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 10px;
+    font-size: 16px;
+    text-align: right;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.additional-table div {
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.additional-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.additional-row div {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-}
-
-.additional-row input[type="number"],
-.additional-row input[type="text"] {
-    width: 350px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
+/* Search button styling */
 #search-btn {
     padding: 7px 30px;
     background-color: #007bff;
@@ -301,21 +270,13 @@ select:focus {
     outline: none;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
 @media (max-width: 768px) {
     .form-header {
         flex-direction: column;
     }
 
     .lectures-table,
-    .lectures-row,
-    .additional-table,
-    .additional-row {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    .lectures-row {
+        grid-template-columns: 1fr;
     }
 }

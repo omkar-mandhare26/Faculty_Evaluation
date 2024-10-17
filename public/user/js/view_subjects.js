@@ -28,7 +28,7 @@ async function fetchSubjects() {
 }
 
 document.getElementById("profile-btn").addEventListener("click", e => {
-    window.location.href = "/profile";
+    window.location.href = "/dashboard";
 });
 
 document.getElementById("logout-btn").addEventListener("click", e => {

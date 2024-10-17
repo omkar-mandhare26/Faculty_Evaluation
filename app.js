@@ -73,6 +73,10 @@ app.get("/teaching-feedback", userAuthenticateToken, (req, res) => {
     res.sendFile(path.resolve("public/user/html/teaching_feedback.html"));
 });
 
+app.get("/research-academic-contribution", userAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/user/html/research_academics_contributions.html"));
+});
+
 app.post("/just-receive-data", userAuthenticateToken, (req, res) => {
     const body = req.body;
     console.log(body);

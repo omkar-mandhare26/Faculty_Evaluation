@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Research & Academic Contributions</title>
+        <link rel="stylesheet" href="../user/css/research_academics_contributions.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="https://www.aef.edu.in/aef/fevicon.png" />
+    </head>
+    <body>
+        <div class="sidebar">
+            <div class="user-info">
+                <h2 id="user-name"></h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/session-conducted">Session Conducted</a></li>
+                <li><a href="/syllabus-completed">Syllabus Completed</a></li>
+                <li><a href="/class-observations">Class Observation</a></li>
+                <li><a href="/central-committee">Central Committee</a></li>
+                <li><a href="/unit-level-committee">Unit Level Committee</a></li>
+                <li><a href="/research-academic-contribution" id="selected-page">Research and Academic Contribution</a></li>
+                <li><a href="/mentoring-feedback-score">Mentoring Feedback Score</a></li>
+                <li><a href="/teaching-feedback">Teaching Feedback</a></li>
+            </ul>
+            <div class="logout">
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="container">
+                <h1>Research & Academic Contributions</h1>
+                <div class="form-header">
+                    <div class="form-group">
+                        <label for="month">Month:</label>
+                        <select id="month">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <select id="year">
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                        </select>
+                    </div>
+                    <button id="search-btn" onclick="searchContributions()">Search</button>
+                </div>
+
+                <div class="lectures-section">
+                    <div class="lectures-table">
+                        <div class="headings">Research and Academic Contribution</div>
+                        <div class="headings">Contribution Level</div>
+                    </div>
+
+                    <div class="lectures-row">
+                        <div class="contributions">Research Papers in Journals/Periodicals/Books/Chapters/Articles/Editor/Editorial Member</div>
+                        <div>
+                            <select class="contribution-level" id="research-paper">
+                                <option value="0">None - 0</option>
+                                <option value="20">International - 20</option>
+                                <option value="15">National - 15</option>
+                                <option value="12">State - 12</option>
+                                <option value="10">University Level - 10</option>
+                                <option value="8">College - 8</option>
+                                <option value="5">Paper Work Started - 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="lectures-row">
+                        <div class="contributions">PHD Course Work in Process</div>
+                        <div>
+                            <select class="contribution-level" id="phd-work">
+                                <option value="0">None - 0</option>
+                                <option value="20">International - 20</option>
+                                <option value="15">National - 15</option>
+                                <option value="12">State - 12</option>
+                                <option value="10">University Level - 10</option>
+                                <option value="8">College - 8</option>
+                                <option value="5">Paper Work Started - 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="lectures-row">
+                        <div class="contributions">CSTA Membership</div>
+                        <div>
+                            <select class="contribution-level" id="csta-membership">
+                                <option value="0">None - 0</option>
+                                <option value="20">International - 20</option>
+                                <option value="15">National - 15</option>
+                                <option value="12">State - 12</option>
+                                <option value="10">University Level - 10</option>
+                                <option value="8">College - 8</option>
+                                <option value="5">Paper Work Started - 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="lectures-row">
+                        <div class="contributions">Published chapter in Digital Economy publication</div>
+                        <div>
+                            <select class="contribution-level" id="published-chapter">
+                                <option value="0">None - 0</option>
+                                <option value="20">International - 20</option>
+                                <option value="15">National - 15</option>
+                                <option value="12">State - 12</option>
+                                <option value="10">University Level - 10</option>
+                                <option value="8">College - 8</option>
+                                <option value="5">Paper Work Started - 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="lectures-row">
+                        <div class="contributions">Research Paper Initiated</div>
+                        <div>
+                            <select class="contribution-level" id="research-paper-initiated">
+                                <option value="0">None - 0</option>
+                                <option value="20">International - 20</option>
+                                <option value="15">National - 15</option>
+                                <option value="12">State - 12</option>
+                                <option value="10">University Level - 10</option>
+                                <option value="8">College - 8</option>
+                                <option value="5">Paper Work Started - 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="lectures-row">
+                        <div class="contributions">Blogging</div>
+                        <div>
+                            <select class="contribution-level" id="blog">
+                                <option value="0">None - 0</option>
+                                <option value="20">International - 20</option>
+                                <option value="15">National - 15</option>
+                                <option value="12">State - 12</option>
+                                <option value="10">University Level - 10</option>
+                                <option value="8">College - 8</option>
+                                <option value="5">Paper Work Started - 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <span class="lectures-total">
+                        <span>Total Marks:</span>
+                        <span id="total-weightage">0</span>
+                    </span>
+                </div>
+
+                <button type="submit" id="submit-btn">Submit</button>
+            </div>
+        </div>
+
+        <script src="../user/js/research_academic_contributions.js"></script>
+    </body>
+</html>
