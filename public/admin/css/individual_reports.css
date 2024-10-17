@@ -124,6 +124,87 @@ select:focus {
     outline: none;
 }
 
+.table-content {
+    margin-top: 20px;
+    overflow-x: auto; /* For horizontal scrolling on small screens */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+thead th {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+    background-color: #f0f2f5;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 12px;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+@media (max-width: 600px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody tr {
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+    }
+
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        flex-basis: 50%;
+        text-align: left;
+        font-weight: bold;
+        padding-right: 10px;
+    }
+}
+
 @media (max-width: 768px) {
     .form-header {
         flex-direction: column;

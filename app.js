@@ -1,6 +1,7 @@
 // import adminAuthenticateToken from "./middlewares/admin_auth_token.js";
 import userAuthenticateToken from "./middlewares/user_auth_token.js";
 import apiRoutesAdmin from "./routes/apiRoutesAdmin.js";
+import reportRoutes from "./routes/reportRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import apiRoutes from "./routes/apiRoutes.js";
@@ -24,6 +25,7 @@ app.use("/api", apiRoutes);
 app.use("/api/admin", apiRoutesAdmin);
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
+app.use("/reports", reportRoutes);
 
 app.get("/", userAuthenticateToken, (req, res) => {
     res.json({ msg: "Hellooo from Home Page" });

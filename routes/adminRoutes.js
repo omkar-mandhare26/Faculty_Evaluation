@@ -53,6 +53,10 @@ router.get("/generate-individual-report", adminAuthenticateToken, (req, res) => 
     res.sendFile(path.resolve("public/admin/html/individual_reports.html"));
 });
 
+router.get("/generate-full-report", adminAuthenticateToken, (req, res) => {
+    res.sendFile(path.resolve("public/admin/html/full_reports.html"));
+});
+
 router.post("/signup", async (req, res) => {
     const parsedInfo = req.body;
     const hashedPW = await createHashPassword(parsedInfo.password);
