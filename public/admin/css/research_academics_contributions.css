@@ -1,0 +1,282 @@
+/* General page styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+}
+
+/* Highlight selected page */
+#selected-page {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+/* User info section in sidebar */
+.user-info {
+    margin-bottom: 20px;
+}
+
+.user-info h2 {
+    margin: 0;
+    font-size: 20px;
+    text-align: center;
+}
+
+/* Navigation links in the sidebar */
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links li {
+    margin-bottom: 10px;
+}
+
+.nav-links a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.nav-links a:hover {
+    background-color: #f0f0f0;
+}
+
+/* Logout button at the bottom of the sidebar */
+.logout {
+    margin-top: auto;
+    text-align: center;
+}
+
+.logout a {
+    color: #007bff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.logout a:hover {
+    background-color: #e0e0e0;
+}
+
+/* Main content section */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Container for the main form and other content */
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+/* Main heading styling */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form header layout with responsiveness */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Label styling */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Input and select styling */
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Section for lectures */
+.lectures-section {
+    margin-top: 20px;
+}
+
+.lectures-section h2 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Flex layout for contribution rows and headings */
+.lectures-table {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 15px;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.headings {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+/* Contribution names styling */
+.contributions {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contribution-level {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.lectures-row {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 15px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.lectures-row .contributions {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lectures-row select.contribution-level {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.total-marks {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: right;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Search button styling */
+#search-btn {
+    padding: 7px 30px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 18px;
+}
+
+#search-btn:hover {
+    background-color: #0056b3;
+}
+
+#search-btn:focus {
+    outline: none;
+}
+
+#submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#submit-btn:hover {
+    background-color: #0056b3;
+}
+
+#submit-btn:focus {
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .form-header {
+        flex-direction: column;
+    }
+
+    .lectures-table,
+    .lectures-row {
+        grid-template-columns: 1fr;
+    }
+}

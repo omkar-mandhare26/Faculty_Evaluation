@@ -27,8 +27,8 @@ app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/reports", reportRoutes);
 
-app.get("/", userAuthenticateToken, (req, res) => {
-    res.json({ msg: "Hellooo from Home Page" });
+app.get("/", (req, res) => {
+    res.sendFile(path.resolve("public/home.html"));
 });
 
 app.get("/login", (req, res) => {

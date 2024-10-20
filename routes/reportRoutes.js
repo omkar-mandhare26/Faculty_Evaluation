@@ -79,28 +79,6 @@ router.get("/get-full-report", adminAuthenticateToken, async (req, res) => {
             });
         }
 
-        /*
-        Ex:
-        [
-            {
-                "name": "Omkar Mandhare",
-                "teachingLearning": 65,
-                "classObservation": 70,
-                "researchAcademicContribution": 70,
-                "mentoringFeedbackScore": 69,
-                "teachingFeedbackScore": 70
-            },
-            {
-                "name": "Kanishka Chordiya",
-                "teachingLearning": 69,
-                "classObservation": 70,
-                "researchAcademicContribution": 70,
-                "mentoringFeedbackScore": 69,
-                "teachingFeedbackScore": 71
-            }
-        ]
-        */
-
         res.status(200).json({ data: report, isError: false });
     } catch (error) {
         res.status(500).json({ isError: true, error: error.message });
@@ -208,16 +186,16 @@ router.get("/mentoring-feedback", adminAuthenticateToken, async (req, res) => {
         const mentoring = [];
 
         for (let user of allUsers) {
-            let mentoringFeedback = 0;
+            let mentoringFeedbackMarks = 0;
             const mentoringFeedbackRecords = await mentoringFeedback.find({ userId: user._id, month: monthName, year: year });
 
             for (let mentoring of mentoringFeedbackRecords) {
-                mentoringFeedback += mentoring.marks;
+                mentoringFeedbackMarks += mentoring.marks;
             }
 
             mentoring.push({
                 name: `${user.firstName} ${user.lastName}`,
-                marks: mentoringFeedback
+                marks: mentoringFeedbackMarks
             });
         }
 

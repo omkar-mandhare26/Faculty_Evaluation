@@ -1,4 +1,4 @@
-import { User, Subjects, noOfLectures, syllabusCompleted, classObservation, mentoringFeedback, teachingFeedback } from "../db_schemas/schemas.js";
+import { User, Subjects, noOfLectures, syllabusCompleted, classObservation, mentoringFeedback, teachingFeedback, Contribution } from "../db_schemas/schemas.js";
 import { generateUserId, getMonthName, getUserType, decodeJWT } from "../utils/all_utils.js";
 import { userZodSchema, syllabus_Schema } from "../zod_schemas/zod_schemas.js";
 import { createHashPassword, checkPassword } from "../utils/hash_password.js";
@@ -364,6 +364,24 @@ router.post("/submit-teaching-feedback", adminAuthenticateToken, async (req, res
     } catch (error) {
         console.error(error);
         return res.status(500).json({ isError: true, error: error.message });
+    }
+});
+
+router.get("/get-contributions", adminAuthenticateToken, async (req, res) => {
+    const { userId, month, year } = req.query;
+    const monthName = getMonthName(month).month;
+    try {
+        const user = await User.findOne({ userId });
+        if (!user) {
+            return res.status(404).json({ isError: true, message: "User not found" });
+        }
+
+        const contributions = await Contribution.find({ user: user._id, month: monthName, year });
+
+        return res.status(200).json({ isError: false, data: contributions });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ isError: true, message: "Error while fetching contributions" });
     }
 });
 
